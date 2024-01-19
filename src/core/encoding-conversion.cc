@@ -61,7 +61,7 @@ EncodingConversion::EncodingConversion(int mode, void *data) :
   data{data}, mode{mode} {}
 
 EncodingConversion::~EncodingConversion() {
-  if (data) iconv_close(data);
+  if (data) iconv_close((iconv_t)data);
 }
 
 int EncodingConversion::convert(
@@ -114,7 +114,7 @@ int EncodingConversion::convert(
     }
 
     default: {
-      auto converter = static_cast<iconv_t *>(data);
+      auto converter = static_cast<iconv_t>(data);
       size_t input_length = input_end - *input;
       size_t output_length = output_end - *output;
       auto conversion_result = iconv(
